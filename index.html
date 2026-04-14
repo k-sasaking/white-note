@@ -42,6 +42,10 @@
     background: #ffffff;
     color: #222;
     pointer-events: none;
+    transition: background-color 160ms ease;
+  }
+  .wrap.is-code #highlight {
+    background: #f6f8fa;
   }
   #highlight code {
     font: inherit;
@@ -72,6 +76,7 @@
   const editor = document.getElementById('editor');
   const hlPre = document.getElementById('highlight');
   const hlCode = document.getElementById('hl-code');
+  const wrap = document.querySelector('.wrap');
   const KEY = 'white-note:content';
 
   const MIN_RELEVANCE = 5;
@@ -81,15 +86,18 @@
     if (text.trim().length === 0) {
       hlCode.textContent = withTrailing;
       hlCode.className = '';
+      wrap.classList.remove('is-code');
       return;
     }
     const result = hljs.highlightAuto(withTrailing);
     if (result.relevance >= MIN_RELEVANCE) {
       hlCode.innerHTML = result.value;
       hlCode.className = 'hljs language-' + result.language;
+      wrap.classList.add('is-code');
     } else {
       hlCode.textContent = withTrailing;
       hlCode.className = '';
+      wrap.classList.remove('is-code');
     }
   }
 
